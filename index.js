@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Collection, GatewayIntentBits, Options, IntentsBitField } = require('discord.js');
+require('dotenv').config();
 
 const intents = new IntentsBitField();
 intents.add(GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages);
@@ -46,6 +47,6 @@ client.on('interactionCreate', async (interaction) => {
       fetchReply: true
     })
   }
-})
+});
 
-client.login("");
+client.login();

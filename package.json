@@ -20,6 +20,7 @@
     "@discordjs/opus": "^0.8.0",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
     "fs": "^0.0.1-security"
   }
 }
