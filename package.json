@@ -1,21 +1,21 @@
 {
-  "name": "donbot",
+  "name": "showdown",
   "version": "1.0.0",
-  "description": "A discord bot that is used by TheDonnies discord server",
+  "description": "A discord bot that is used by UIM Showdown server",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HadleighB/DonBot.git"
+    "url": "git+https://github.com/HadleighB/Showdown.git"
   },
   "author": "Hadleigh Bird",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HadleighB/DonBot/issues"
+    "url": "https://github.com/HadleighB/Showdown/issues"
   },
-  "homepage": "https://github.com/HadleighB/DonBot#readme",
+  "homepage": "https://github.com/HadleighB/Showdown#readme",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
     "discord-api-types": "^0.37.35",
