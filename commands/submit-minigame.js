@@ -3,39 +3,27 @@ require ('dotenv').config({path: '../config.env'});
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('submit')
-        .setDescription('Submit data for the bingo!')
-        .addStringOption(option =>
-            option.setName('team')
-                .setDescription('The team you are submitting for')
-                .setRequired(true)
-                .addChoices(
-                    { name: 'Mahogany Homies', value: 'Mahogany Homies'},
-                    { name: 'Gorillanor Gamers', value: 'Gorillanor Gamers'},
-                ))
+        .setName('submit_minigame')
+        .setDescription('Submit a minigame killcount/points for the bingo!')
         .addAttachmentOption(option =>
             option.setName('screenshot')
                 .setDescription('The screenshot of the data you are submitting')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('type')
-                .setDescription('The type of data you are submitting')
+            option.setName('minigame')
+                .setDescription('The minigame you are submitting data for')
                 .setRequired(true)
                 .addChoices(
-                    { name: 'Item', value: 'item'},
-                    { name: 'Minigame', value: 'minigame'},
-                    { name: 'Collection Log', value: 'collection_log'},
-                    { name: 'Boss Killcount', value: 'boss_killcount'},
-                ))    
+                    { name: 'Barbarian Assault', value: 'Barbarian Assualt' },
+                    { name: 'Pest Control', value: 'Pest Control' },
+                ))
         .addStringOption(option =>
             option.setName('current_value')
                 .setDescription('The current killcount/points for the data you are submitting')
-                .setRequired(false)),
+                .setRequired(true)),
     async execute(interaction, client) {
         // Get submission data
-        let team = interaction.options.getString('team');
         let screenshot = interaction.options.getAttachment('screenshot');
-        let type = interaction.options.getString('type');
         let current_value = interaction.options.getString('current_value');
 
         if (current_value === null) {
@@ -47,17 +35,32 @@ module.exports = {
 
         // Send submission to submissions channel
         const embed = new EmbedBuilder()
-            .setTitle(`${team} submitted a ${type}!`)
+            .setTitle(`A player has submitted a minigame!`)
             .setDescription(`Current value: ${current_value}`)
             .setImage(screenshot.url)
             .setURL(screenshot.url)
             .setTimestamp()
             .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
             .setColor('#0099ff');
+
+        // Accept and deny buttons
+        const acceptButton = new ButtonBuilder()
+            .setCustomId('accept')
+            .setLabel('Accept')
+            .setStyle(ButtonStyle.Success);
+
+        const denyButton = new ButtonBuilder()
+            .setCustomId('deny')
+            .setLabel('Deny')
+            .setStyle(ButtonStyle.Danger);
+
+        const actionRow = new ActionRowBuilder()
+            .addComponents(acceptButton, denyButton);
+
         
-        channel.send({ embeds: [embed] });
+        channel.send({ embeds: [embed], components: [actionRow] });
 
         // Send confirmation to user
-        interaction.reply(`Your ${type} has been submitted!`);
+        interaction.reply(`Your minigame has been submitted!`);
     }
 };

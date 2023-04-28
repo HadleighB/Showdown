@@ -31,7 +31,7 @@ module.exports = {
             for (const player of players) {
                 const user = await guild.members.fetch({ query: player.name, limit: 1 });
                 const userID = user.first().id;
-                guild.members.edit(userID, { roles: [role] });
+                await guild.members.cache.get(userID).roles.add(role.id);
             }
         }
 
@@ -107,5 +107,8 @@ module.exports = {
             }
         }
         setPermissions();
+
+        // Send confirmation to user
+        interaction.reply(`Channels & roles have been created!`);
     }
 };
