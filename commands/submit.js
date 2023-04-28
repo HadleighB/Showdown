@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 require ('dotenv').config({path: '../config.env'});
 
 module.exports = {
@@ -8,7 +8,11 @@ module.exports = {
         .addStringOption(option =>
             option.setName('team')
                 .setDescription('The team you are submitting for')
-                .setRequired(true))
+                .setRequired(true)
+                .addChoices(
+                    { name: 'Mahogany Homies', value: 'Mahogany Homies'},
+                    { name: 'Gorillanor Gamers', value: 'Gorillanor Gamers'},
+                ))
         .addAttachmentOption(option =>
             option.setName('screenshot')
                 .setDescription('The screenshot of the data you are submitting')
@@ -50,6 +54,7 @@ module.exports = {
             .setTimestamp()
             .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
             .setColor('#0099ff');
+        
         channel.send({ embeds: [embed] });
 
         // Send confirmation to user

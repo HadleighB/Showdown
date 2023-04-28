@@ -94,7 +94,6 @@ module.exports = {
 
         // Set the permissions for the channels
         async function setPermissions() {
-            await createCategories();
             await new Promise(resolve => setTimeout(resolve, 2000));
 
             for (const team in config) {
