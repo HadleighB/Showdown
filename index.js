@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { Client, Collection, GatewayIntentBits, Options, IntentsBitField } = require('discord.js');
-require('dotenv').config();
+const dotenv = require('dotenv').config({path: 'config.env'});
 
 const intents = new IntentsBitField();
 intents.add(GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages);
@@ -49,4 +49,4 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-client.login();
+client.login(process.env.TOKEN);

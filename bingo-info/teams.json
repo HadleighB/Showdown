@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Mahogany Homies",
+        "tag": "MH",
+        "color": "#8B4513",
+        "players": [
+            {
+                "name": "PigeNug"
+            }
+        ]
+    },
+    {
+        "name": "Gorilla-nor Gamers",
+        "tag": "GG",
+        "color": "#FFA500",
+        "players": [
+            {
+                "name": "Donald"
+            }
+        ]
+    }
+]
