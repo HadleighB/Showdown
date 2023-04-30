@@ -29,8 +29,9 @@ module.exports = {
             const players = config[team].players;
 
             for (const player of players) {
-                const user = await guild.members.fetch({ query: player.name, limit: 1 });
-                const userID = user.first().id;
+                // Get user from name
+                let username = player.tag.split('#')[0];
+                const userID = await guild.members.cache.find(member => member.user.username === username).id;
                 await guild.members.cache.get(userID).roles.add(role.id);
             }
         }

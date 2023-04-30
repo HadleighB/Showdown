@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-require ('dotenv').config({path: '../config.env'});
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,17 +7,7 @@ module.exports = {
         .addAttachmentOption(option =>
             option.setName('screenshot')
                 .setDescription('The screenshot of the data you are submitting')
-                .setRequired(true))
-        .addStringOption(option =>
-            option.setName('item')
-                .setDescription('The item you are submitting')
-                .setRequired(true)
-                .addChoices(
-                    {name: 'Abyssal Whip', value: 'Abyssal Whip'},
-                    {name: 'Abyssal Dagger', value: 'Abyssal Dagger'},
-                    {name: 'Abyssal Head', value: 'Abyssal Head'},
-                    {name: 'Abyssal Orphan', value: 'Abyssal Orphan'},
-                )),
+                .setRequired(true)),
     async execute(interaction, client) {
         // Get submission data
         let screenshot = interaction.options.getAttachment('screenshot');
@@ -29,7 +18,7 @@ module.exports = {
 
         // Send submission to submissions channel
         const embed = new EmbedBuilder()
-            .setTitle(`A player has submitted a ${item}!`)
+            .setTitle(`A player has submitted a collection log item!`)
             .setImage(screenshot.url)
             .setURL(screenshot.url)
             .setTimestamp()
@@ -37,9 +26,9 @@ module.exports = {
             .setColor('#0099ff');
 
         // Accept and deny buttons
-        const acceptButton = new ButtonBuilder()
-            .setCustomId('accept')
-            .setLabel('Accept')
+        const approveButton = new ButtonBuilder()
+            .setCustomId('approve')
+            .setLabel('Approve')
             .setStyle(ButtonStyle.Success);
 
         const denyButton = new ButtonBuilder()
@@ -48,12 +37,12 @@ module.exports = {
             .setStyle(ButtonStyle.Danger);
 
         const actionRow = new ActionRowBuilder()
-            .addComponents(acceptButton, denyButton);
+            .addComponents(approveButton, denyButton);
 
         
         channel.send({ embeds: [embed], components: [actionRow] });
 
         // Send confirmation to user
-        interaction.reply(`Your ${item} has been submitted!`);
+        interaction.reply(`Your collection log item has been submitted!`);
     }
 };

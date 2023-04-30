@@ -5,9 +5,16 @@
         "color": "#8B4513",
         "players": [
             {
-                "name": "PigeNug"
+                "name": "PigeNug",
+                "tag": "PigeonNugget#7741"
+            },
+            {
+                "name": "42",
+                "tag": "Forteu#5059"
             }
-        ]
+        ],
+        "board": "https://docs.google.com/spreadsheets/d/1XTtf55xRftY3kkJyI4SMKAHbSEaSQcXAXuZILKgCP_Y/edit#gid=1414616119",
+        "boardImage": "https://i.imgur.com/jwlCLhJ.png"
     },
     {
         "name": "Gorilla-nor Gamers",
@@ -15,8 +22,11 @@
         "color": "#FFA500",
         "players": [
             {
-                "name": "Donald"
+                "name": "Donald",
+                "tag": "Donald#6518"
             }
-        ]
+        ],
+        "board": "https://docs.google.com/spreadsheets/d/1cvANIZ2EMAhK0vMYkYG9_u45AGMQGtNBHsh6PD98z5Y/edit#gid=2021449498",
+        "boardImage": "https://i.imgur.com/OuFD0K2.png"
     }
 ]

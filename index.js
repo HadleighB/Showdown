@@ -3,7 +3,7 @@ const { Client, Collection, GatewayIntentBits, Options, IntentsBitField } = requ
 const dotenv = require('dotenv').config({path: 'config.env'});
 
 const intents = new IntentsBitField();
-intents.add(GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages);
+intents.add(GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences);
 const client = new Client({ intents: intents });
 
 client.commands = new Collection();
@@ -47,6 +47,27 @@ client.on('interactionCreate', async (interaction) => {
       fetchReply: true
     })
   }
+});
+
+// When button is clicked reply who has clicked it
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isButton()) return
+
+    // Accept Button
+    if (interaction.customId === 'approve') {
+        await interaction.update({
+            content: `${interaction.user.username} has approved this submission!`,
+            ephemeral: true
+        });
+    }
+
+    // Decline Button
+    if (interaction.customId === 'deny') {
+        await interaction.update({
+            content: `${interaction.user.username} has denied this submission!`,
+            ephemeral: true
+        });
+    }
 });
 
 client.login(process.env.TOKEN);

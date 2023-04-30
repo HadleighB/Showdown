@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-require ('dotenv').config({path: '../config.env'});
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -44,9 +43,9 @@ module.exports = {
             .setColor('#0099ff');
 
         // Accept and deny buttons
-        const acceptButton = new ButtonBuilder()
-            .setCustomId('accept')
-            .setLabel('Accept')
+        const approveButton = new ButtonBuilder()
+            .setCustomId('approve')
+            .setLabel('Approve')
             .setStyle(ButtonStyle.Success);
 
         const denyButton = new ButtonBuilder()
@@ -55,7 +54,7 @@ module.exports = {
             .setStyle(ButtonStyle.Danger);
 
         const actionRow = new ActionRowBuilder()
-            .addComponents(acceptButton, denyButton);
+            .addComponents(approveButton, denyButton);
 
         
         channel.send({ embeds: [embed], components: [actionRow] });
