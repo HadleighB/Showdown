@@ -6,8 +6,7 @@ module.exports = {
         .setName('initialise')
         .setDescription('Create channels & roles from the config file!'),
     async execute(interaction, client) {
-        // Check if user is an admin
-        if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+        if (interaction.member.permissions.has('ADMINISTRATOR')) {
             const fs = require('fs');
             const config = JSON.parse(fs.readFileSync('./bingo-info/teams.json', 'utf8'));
             const guild = client.guilds.cache.get(process.env.GUILD_ID);

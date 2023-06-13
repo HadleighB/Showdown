@@ -6,11 +6,7 @@
         "players": [
             {
                 "name": "PigeNug",
-                "tag": "PigeonNugget#7741"
-            },
-            {
-                "name": "42",
-                "tag": "Forteu#5059"
+                "tag": "pigeonnugget"
             }
         ],
         "board": "https://docs.google.com/spreadsheets/d/1XTtf55xRftY3kkJyI4SMKAHbSEaSQcXAXuZILKgCP_Y/edit#gid=1414616119",
@@ -23,7 +19,11 @@
         "players": [
             {
                 "name": "Donald",
-                "tag": "Donald#6518"
+                "tag": ".donald."
+            },
+            {
+                "name": "42",
+                "tag": "Forteu#5059"
             }
         ],
         "board": "https://docs.google.com/spreadsheets/d/1cvANIZ2EMAhK0vMYkYG9_u45AGMQGtNBHsh6PD98z5Y/edit#gid=2021449498",

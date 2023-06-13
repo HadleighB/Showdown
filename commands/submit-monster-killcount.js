@@ -11,56 +11,50 @@ module.exports = {
         .addStringOption(option =>
             option.setName('monster')
                 .setDescription('The monster you are submitting data for')
-                .setRequired(true)
-                .addChoices(
-                    { name: 'Abyssal Sire', value: 'Abyssal Sire' },
-                    { name: 'Alchemical Hydra', value: 'Alchemical Hydra' },
-                    { name: 'Barrows Chests', value: 'Barrows Chests' },
-                ))
-        .addStringOption(option =>
+                .setRequired(true))
+        .addIntegerOption(option =>
             option.setName('current_value')
                 .setDescription('The current killcount for the data you are submitting')
-                .setRequired(true)),
+                .setRequired(true)
+                .setMinValue(1)),
     async execute(interaction, client) {
-        // Get submission data
-        let screenshot = interaction.options.getAttachment('screenshot');
-        let current_value = interaction.options.getString('current_value');
+        if (interaction.member.permissions.has('ADMINISTRATOR')) {
+            let screenshot = interaction.options.getAttachment('screenshot');
+            let monster = interaction.options.getString('monster');
+            let current_value = interaction.options.getInteger('current_value');
 
-        if (current_value === null) {
-            current_value = 'N/A';
+            if (current_value === null) {
+                current_value = 'N/A';
+            }
+
+            const channel = client.channels.cache.find(channel => channel.name === "data-submissions");
+
+            const embed = new EmbedBuilder()
+                .setTitle(`A player has submitted a monster killcount: ${monster}`)
+                .setDescription(`Current value: ${current_value}`)
+                .setImage(screenshot.url)
+                .setURL(screenshot.url)
+                .setTimestamp()
+                .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
+                .setColor('#0099ff');
+
+            const approveButton = new ButtonBuilder()
+                .setCustomId('approve')
+                .setLabel('Approve')
+                .setStyle(ButtonStyle.Success);
+
+            const denyButton = new ButtonBuilder()
+                .setCustomId('deny')
+                .setLabel('Deny')
+                .setStyle(ButtonStyle.Danger);
+
+            const actionRow = new ActionRowBuilder()
+                .addComponents(approveButton, denyButton);
+
+            
+            channel.send({ embeds: [embed], components: [actionRow] });
+
+            interaction.reply(`Your monster killcount has been submitted!`);
         }
-
-        // Get submissions channel
-        const channel = client.channels.cache.find(channel => channel.name === "data-submissions");
-
-        // Send submission to submissions channel
-        const embed = new EmbedBuilder()
-            .setTitle(`A player has submitted a monster killcount!`)
-            .setDescription(`Current value: ${current_value}`)
-            .setImage(screenshot.url)
-            .setURL(screenshot.url)
-            .setTimestamp()
-            .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-            .setColor('#0099ff');
-
-        // Accept and deny buttons
-        const approveButton = new ButtonBuilder()
-            .setCustomId('approve')
-            .setLabel('Approve')
-            .setStyle(ButtonStyle.Success);
-
-        const denyButton = new ButtonBuilder()
-            .setCustomId('deny')
-            .setLabel('Deny')
-            .setStyle(ButtonStyle.Danger);
-
-        const actionRow = new ActionRowBuilder()
-            .addComponents(approveButton, denyButton);
-
-        
-        channel.send({ embeds: [embed], components: [actionRow] });
-
-        // Send confirmation to user
-        interaction.reply(`Your monster killcount has been submitted!`);
     }
 };

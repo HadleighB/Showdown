@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Collection, GatewayIntentBits, Options, IntentsBitField } = require('discord.js');
+const { group } = require('console');
 const dotenv = require('dotenv').config({path: 'config.env'});
 
 const intents = new IntentsBitField();
@@ -50,24 +51,120 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // When button is clicked reply who has clicked it
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isButton()) return
+client.on('interactionCreate', async interaction => {
+    if (interaction.isButton()) {
+        const button = interaction.component;
+        if (!button) return;
 
-    // Accept Button
-    if (interaction.customId === 'approve') {
-        await interaction.update({
-            content: `${interaction.user.username} has approved this submission!`,
-            ephemeral: true
-        });
-    }
+        const message = await interaction.channel.messages.fetch(interaction.message.id);
+        const messageEmbed = message.embeds[0];
+        const author = messageEmbed.author;
+        const user = client.users.cache.find(user => user.username === author.name);
 
-    // Decline Button
-    if (interaction.customId === 'deny') {
-        await interaction.update({
-            content: `${interaction.user.username} has denied this submission!`,
-            ephemeral: true
+        let title = messageEmbed.title;
+        let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC;
+        if (title.includes('collection log entry')) {
+            let split = title.split('collection log entry: ');
+            subject = split[1];
+        } else if (title.includes('submitted a minigame')) {
+            let split = title.split('submitted a minigame: ');
+            let descSplit = messageEmbed.description.split('value: ');
+            subject = split[1] + " " + descSplit[1] + " (kc/points)";
+
+            minigame = split[1];
+            minigameKC = descSplit[1];
+        } else if (title.includes('TOA KC')) {
+            let split = messageEmbed.description.split('Invocation Level: ');
+            let titleSplit = title.split('Group Size - ');
+            invoLevel = split[1];
+            groupSize = titleSplit[1];
+
+            subject = split[1] + " Invocation TOA KC";
+        } else if (title.includes('monster killcount: ')) {
+            let split = title.split('monster killcount: ');
+            let descSplit = messageEmbed.description.split('value: ');
+            subject = descSplit[1] + "kc of " + split[1];
+
+            monster = split[1];
+            kc = descSplit[1];
+        } else {
+            subject = "Error: Subject not found";
+        }
+
+        const teams = require('./bingo-info/teams.json');
+        for (const team of teams) {
+            for (const player of team.players) {
+                if (player.tag === author.name) {
+                    teamName = team.name;
+                    break;
+                }
+            }
+        }
+
+        //const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
+        //const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
+
+        if (button.customId === 'approve') {
+            //mainChat.send(`The ${subject} from ${user} has been approved.`);
+            message.edit({ components: [] });
+
+            message.react('✅');
+        } else if (button.customId === 'deny') {
+            //mainChat.send(`The ${subject} from ${user} has been denied.`);
+            message.edit({ components: [] });
+
+            message.react('❌');
+        }
+
+        // Google Sheets API
+        const { GoogleSpreadsheet } = require('google-spreadsheet');
+        const doc = new GoogleSpreadsheet(process.env.SHEET_ID);
+
+        await doc.useServiceAccountAuth({
+            client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+            private_key: process.env.GOOGLE_PRIVATE_KEY,
         });
+        await doc.loadInfo();
+
+        if (button.customId === 'approve') {
+            if (title.includes('collection log entry')) {
+                const sheet = doc.sheetsByIndex[1];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Team Name': teamName,
+                    'Item': subject,
+                    'Screenshot URL': message.embeds[0].image.url
+                });
+            } else if (title.includes('submitted a minigame')) {
+                const sheet = doc.sheetsByIndex[2];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Minigame': minigame,
+                    'Kill Count': minigameKC,
+                    'Team Name': teamName,
+                    'Screenshot URL': message.embeds[0].image.url
+                });
+            } else if (title.includes('TOA KC')) {
+                const sheet = doc.sheetsByIndex[3];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Invocation': invoLevel,
+                    'Group Size': groupSize,
+                    'Team Name': teamName,
+                    'Screenshot URL': message.embeds[0].image.url
+                });
+            } else if (title.includes('monster killcount: ')) {
+                const sheet = doc.sheetsByIndex[4];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Monster': monster,
+                    'Kill Count': kc,
+                    'Team Name': teamName,
+                    'Screenshot URL': message.embeds[0].image.url
+                });
+            }
+        }
     }
-});
+})
 
 client.login(process.env.TOKEN);
