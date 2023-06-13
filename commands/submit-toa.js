@@ -26,7 +26,7 @@ module.exports = {
             let invoLevel = interaction.options.getInteger('invocation-level');
             let groupSize = interaction.options.getString('group-size');
 
-            const channel = client.channels.cache.find(channel => channel.name === "data-submissions");
+            const channel = client.channels.cache.get('1118260344603816047');
 
             const embed = new EmbedBuilder()
                 .setTitle(`A player has submitted TOA KC: Group Size - ${groupSize}`)

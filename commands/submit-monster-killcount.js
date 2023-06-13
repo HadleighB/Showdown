@@ -27,7 +27,7 @@ module.exports = {
                 current_value = 'N/A';
             }
 
-            const channel = client.channels.cache.find(channel => channel.name === "data-submissions");
+            const channel = client.channels.cache.get('1118260344603816047');
 
             const embed = new EmbedBuilder()
                 .setTitle(`A player has submitted a monster killcount: ${monster}`)

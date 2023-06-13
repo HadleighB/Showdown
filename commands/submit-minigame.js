@@ -26,7 +26,7 @@ module.exports = {
             let current_value = interaction.options.getInteger('current_value');
             let minigame = interaction.options.getString('minigame');
 
-            const channel = client.channels.cache.find(channel => channel.name === "data-submissions");
+            const channel = client.channels.cache.get('1118260344603816047');
 
             const embed = new EmbedBuilder()
                 .setTitle(`A player has submitted a minigame: ${minigame}`)
