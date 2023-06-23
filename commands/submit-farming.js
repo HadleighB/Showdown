@@ -2,51 +2,38 @@ const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRow
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('submit_collection_log')
-        .setDescription('Submit a collection log item for the bingo! (Make sure the drop is in the screenshot)')
+        .setName('submit_farming')
+        .setDescription('Submit a tithe points/farming contracts for the bingo!')
         .addAttachmentOption(option =>
             option.setName('screenshot')
-                .setDescription('The screenshot of the item you are submitting')
+                .setDescription('The screenshot of the minigame you are submitting')
                 .setRequired(true))
         .addStringOption(option =>
-            option.setName('item-name')
-                .setDescription('The name of the item you are submitting')
+            option.setName('farming_type')
+                .setDescription('The type of data you are submitting')
                 .setRequired(true)
-                .setAutocomplete(true)),     
-    async autocomplete(interaction) {
-        let focusedValue = interaction.options.getString("item-name");
-        let items = require('../bingo-info/collection-log-items.json');
-
-        focusedValue = focusedValue.toLowerCase().replace(/[^a-z]/g, '_');
-
-        const filtered = items.filter(item => item.value.startsWith(focusedValue));
-
-        let options;
-        if (filtered.length > 25) {
-            options = filtered.slice(0, 25);
-        } else {
-            options = filtered;
-        }
-
-        await interaction.respond(
-            options.map(item => ({
-                name: item.name,
-                value: item.value
-            }))
-        );
-    },   
+                .addChoices(
+                    { name: 'Tithe Farm', value: 'Tithe Farm' },
+                    { name: 'Farming Contracts', value: 'Farming Contracts' },
+                ))
+        .addIntegerOption(option =>
+            option.setName('current_value')
+                .setDescription('The contracts/points for the type of farming you are submitting')
+                .setRequired(true)),
     async execute(interaction, client) {
         let screenshot = interaction.options.getAttachment('screenshot');
-        let itemName = interaction.options.getString('item-name');
+        let current_value = interaction.options.getInteger('current_value');
+        let farming_type = interaction.options.getString('farming_type');
 
         const channel = client.channels.cache.get('1118260344603816047');
 
         if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg')) {
             screenshot.url = "https://cdn-icons-png.flaticon.com/512/6231/6231942.png";
         }
-
+        
         const embed = new EmbedBuilder()
-            .setTitle(`A player has submitted a collection log entry: ${itemName}`)
+            .setTitle(`A player has submitted contracts/points: ${farming_type}`)
+            .setDescription(`Current value: ${current_value}`)
             .setImage(screenshot.url)
             .setURL(screenshot.url)
             .setTimestamp()
@@ -69,6 +56,6 @@ module.exports = {
         
         channel.send({ embeds: [embed], components: [actionRow] });
 
-        interaction.reply(`Your collection log item has been submitted!`);
+        interaction.reply(`Your farming contracts/points has been submitted!`);
     }
 };

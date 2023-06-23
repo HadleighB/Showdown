@@ -21,39 +21,41 @@ module.exports = {
                     { name: 'Group', value: 'Group' },
                 )),        
     async execute(interaction, client) {
-        if (interaction.member.permissions.has('ADMINISTRATOR')) {
-            let screenshot = interaction.options.getAttachment('screenshot');
-            let invoLevel = interaction.options.getInteger('invocation-level');
-            let groupSize = interaction.options.getString('group-size');
+        let screenshot = interaction.options.getAttachment('screenshot');
+        let invoLevel = interaction.options.getInteger('invocation-level');
+        let groupSize = interaction.options.getString('group-size');
 
-            const channel = client.channels.cache.get('1118260344603816047');
+        const channel = client.channels.cache.get('1118260344603816047');
 
-            const embed = new EmbedBuilder()
-                .setTitle(`A player has submitted TOA KC: Group Size - ${groupSize}`)
-                .setDescription(`Invocation Level: ${invoLevel}`)
-                .setImage(screenshot.url)
-                .setURL(screenshot.url)
-                .setTimestamp()
-                .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
-                .setColor('#0099ff');
-
-            const approveButton = new ButtonBuilder()
-                .setCustomId('approve')
-                .setLabel('Approve')
-                .setStyle(ButtonStyle.Success);
-
-            const denyButton = new ButtonBuilder()
-                .setCustomId('deny')
-                .setLabel('Deny')
-                .setStyle(ButtonStyle.Danger);
-
-            const actionRow = new ActionRowBuilder()
-                .addComponents(approveButton, denyButton);
-
-            
-            channel.send({ embeds: [embed], components: [actionRow] });
-
-            interaction.reply(`Your toa kc has been submitted!`);
+        if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg')) {
+            screenshot.url = "https://cdn-icons-png.flaticon.com/512/6231/6231942.png";
         }
+
+        const embed = new EmbedBuilder()
+            .setTitle(`A player has submitted TOA KC: Group Size - ${groupSize}`)
+            .setDescription(`Invocation Level: ${invoLevel}`)
+            .setImage(screenshot.url)
+            .setURL(screenshot.url)
+            .setTimestamp()
+            .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
+            .setColor('#0099ff');
+
+        const approveButton = new ButtonBuilder()
+            .setCustomId('approve')
+            .setLabel('Approve')
+            .setStyle(ButtonStyle.Success);
+
+        const denyButton = new ButtonBuilder()
+            .setCustomId('deny')
+            .setLabel('Deny')
+            .setStyle(ButtonStyle.Danger);
+
+        const actionRow = new ActionRowBuilder()
+            .addComponents(approveButton, denyButton);
+
+        
+        channel.send({ embeds: [embed], components: [actionRow] });
+
+        interaction.reply(`Your toa kc has been submitted!`);
     }
 };

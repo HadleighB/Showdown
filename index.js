@@ -31,26 +31,34 @@ for (const file of eventFiles) {
 }
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isCommand()) return
-  const command = client.commands.get(interaction.commandName)
-  if (!command) return
+    const command = client.commands.get(interaction.commandName)
+    if (!command) return
 
-  try {
-    await console.log(
-      `/${interaction.commandName} — Par ${interaction.user.username}`
-    )
-    await command.execute(interaction, client)
-  } catch (error) {
-    console.error(error)
-    return interaction.reply({
-      content: "An error occurred while executing this command!",
-      ephemeral: true,
-      fetchReply: true
-    })
-  }
+    if (interaction.isChatInputCommand()) {
+        try {
+            await console.log(
+            `/${interaction.commandName} — ${interaction.user.username}`
+            )
+            await command.execute(interaction, client)
+        } catch (error) {
+            console.error(error)
+            return interaction.reply({
+            content: "An error occurred while executing this command!",
+            ephemeral: true,
+            fetchReply: true
+            })
+        }
+    } else if (interaction.isAutocomplete()) {
+        try {
+            await command.autocomplete(interaction);
+        } catch (error) {
+            console.error(error);
+        }
+    } else {
+        return;
+    }
 });
 
-// When button is clicked reply who has clicked it
 client.on('interactionCreate', async interaction => {
     if (interaction.isButton()) {
         const button = interaction.component;
@@ -60,9 +68,11 @@ client.on('interactionCreate', async interaction => {
         const messageEmbed = message.embeds[0];
         const author = messageEmbed.author;
         const user = client.users.cache.find(user => user.username === author.name);
+        let teamName = 'No Team';
 
         let title = messageEmbed.title;
-        let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC;
+        let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC; let farmingType; let farmingValue;
+        
         if (title.includes('collection log entry')) {
             let split = title.split('collection log entry: ');
             subject = split[1];
@@ -87,19 +97,28 @@ client.on('interactionCreate', async interaction => {
 
             monster = split[1];
             kc = descSplit[1];
+        } else if (title.includes('contracts/points:')) {
+            let split = title.split('contracts/points: ');
+            let descSplit = messageEmbed.description.split('value: ');
+            subject = descSplit[1] + " " + split[1];
+
+            farmingType = split[1];
+            farmingValue = descSplit[1];
         } else {
             subject = "Error: Subject not found";
         }
 
-        const teams = require('./bingo-info/teams.json');
-        for (const team of teams) {
-            for (const player of team.players) {
-                if (player.tag === author.name) {
-                    teamName = team.name;
-                    break;
-                }
-            }
-        }
+        let screenshot = messageEmbed.image.url;
+
+        // const teams = require('./bingo-info/teams.json');
+        // for (const team of teams) {
+        //     for (const player of team.players) {
+        //         if (player.tag === author.name) {
+        //             teamName = team.name;
+        //             break;
+        //         }
+        //     }
+        // }
 
         //const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
         //const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
@@ -126,6 +145,7 @@ client.on('interactionCreate', async interaction => {
         });
         await doc.loadInfo();
 
+
         if (button.customId === 'approve') {
             if (title.includes('collection log entry')) {
                 const sheet = doc.sheetsByIndex[1];
@@ -133,7 +153,7 @@ client.on('interactionCreate', async interaction => {
                     'Discord Name': author.name,
                     'Team Name': teamName,
                     'Item': subject,
-                    'Screenshot URL': message.embeds[0].image.url
+                    'Screenshot URL': screenshot
                 });
             } else if (title.includes('submitted a minigame')) {
                 const sheet = doc.sheetsByIndex[2];
@@ -142,7 +162,7 @@ client.on('interactionCreate', async interaction => {
                     'Minigame': minigame,
                     'Kill Count': minigameKC,
                     'Team Name': teamName,
-                    'Screenshot URL': message.embeds[0].image.url
+                    'Screenshot URL': screenshot
                 });
             } else if (title.includes('TOA KC')) {
                 const sheet = doc.sheetsByIndex[3];
@@ -151,7 +171,7 @@ client.on('interactionCreate', async interaction => {
                     'Invocation': invoLevel,
                     'Group Size': groupSize,
                     'Team Name': teamName,
-                    'Screenshot URL': message.embeds[0].image.url
+                    'Screenshot URL': screenshot
                 });
             } else if (title.includes('monster killcount: ')) {
                 const sheet = doc.sheetsByIndex[4];
@@ -160,7 +180,16 @@ client.on('interactionCreate', async interaction => {
                     'Monster': monster,
                     'Kill Count': kc,
                     'Team Name': teamName,
-                    'Screenshot URL': message.embeds[0].image.url
+                    'Screenshot URL': screenshot
+                });
+            } else if (title.includes('contracts/points: ')) {
+                const sheet = doc.sheetsByIndex[5];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Farming Type': farmingType,
+                    'Contracts/Points': farmingValue,
+                    'Team Name': teamName,
+                    'Screenshot URL': screenshot
                 });
             }
         }
