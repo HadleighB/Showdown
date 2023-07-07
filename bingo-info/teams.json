@@ -1,32 +1,155 @@
 [
     {
-        "name": "Mahogany Homies",
-        "tag": "MH",
-        "color": "#8B4513",
+        "name": "Falador Fullsends",
+        "tag": "FF",
+        "color": "#FF7400",
         "players": [
             {
-                "name": "PigeNug",
-                "tag": "pigeonnugget"
-            }
-        ],
-        "board": "https://docs.google.com/spreadsheets/d/1XTtf55xRftY3kkJyI4SMKAHbSEaSQcXAXuZILKgCP_Y/edit#gid=1414616119",
-        "boardImage": "https://i.imgur.com/jwlCLhJ.png"
-    },
-    {
-        "name": "Gorilla-nor Gamers",
-        "tag": "GG",
-        "color": "#FFA500",
-        "players": [
-            {
-                "name": "Donald",
-                "tag": ".donald."
+                "name": "buddhapuck",
+                "tag": "buddhapuck"
             },
             {
-                "name": "42",
-                "tag": "Forteu#5059"
+                "name": "Flashcards",
+                "tag": "flashcards"
             }
         ],
-        "board": "https://docs.google.com/spreadsheets/d/1cvANIZ2EMAhK0vMYkYG9_u45AGMQGtNBHsh6PD98z5Y/edit#gid=2021449498",
-        "boardImage": "https://i.imgur.com/OuFD0K2.png"
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Gilded Milkers",
+        "tag": "GM",
+        "color": "#D27806",
+        "players": [
+            {
+                "name": "Shv",
+                "tag": "shy_rs"
+            },
+            {
+                "name": "Lillian Bear",
+                "tag": "badrobert"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Burthorpe Games Room Gamblers",
+        "tag": "BGRG",
+        "color": "#9017D5",
+        "players": [
+            {
+                "name": "RinkoLover",
+                "tag": "reisenlover"
+            },
+            {
+                "name": "Mitaka Asa",
+                "tag": "mitakaasa"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Cuties of Catherby",
+        "tag": "CC",
+        "color": "#969696",
+        "players": [
+            {
+                "name": "flowerworks",
+                "tag": "jamily"
+            },
+            {
+                "name": "Baino",
+                "tag": "baino"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Venenatis Vigilantes",
+        "tag": "VV",
+        "color": "#922924",
+        "players": [
+            {
+                "name": "Not a UIM",
+                "tag": "zagon."
+            },
+            {
+                "name": "Vegas Knight",
+                "tag": "vegasknight"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Prifddinas Potato Purchasers",
+        "tag": "PPP",
+        "color": "#93FFFD",
+        "players": [
+            {
+                "name": "Did You Try",
+                "tag": "didyoutry"
+            },
+            {
+                "name": "nautletics",
+                "tag": "naternaut"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Fossil Island Shore Hikers",
+        "tag": "FISH",
+        "color": "#93FFFD",
+        "players": [
+            {
+                "name": "UIMaddie",
+                "tag": "uimaddie"
+            },
+            {
+                "name": "Q_Z",
+                "tag": "q_z"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Mor Ul Rek Masterminds",
+        "tag": "MURMM",
+        "color": "#969696",
+        "players": [
+            {
+                "name": "SMOKCRXCK",
+                "tag": "codyjk"
+            },
+            {
+                "name": "U 42",
+                "tag": "42rentfree"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
+    },
+    {
+        "name": "Canifis Cat Cafe",
+        "tag": "CCC",
+        "color": "#969696",
+        "players": [
+            {
+                "name": "Ember",
+                "tag": "atom_cats"
+            },
+            {
+                "name": "FursonaHaver",
+                "tag": "fursonahaver"
+            }
+        ],
+        "board": "",
+        "boardImage": ""
     }
 ]

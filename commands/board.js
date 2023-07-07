@@ -15,10 +15,7 @@ module.exports = {
         }
 
         const roles = interaction.member.roles.cache.map(role => role.name);
-        let board;
-        let boardImage;
-        let teamName;
-        let teamColor;
+        let board;let boardImage;let teamName;let teamColor;
         let onTeam = false;
 
         for (const team in config) {

@@ -110,18 +110,18 @@ client.on('interactionCreate', async interaction => {
 
         let screenshot = messageEmbed.image.url;
 
-        // const teams = require('./bingo-info/teams.json');
-        // for (const team of teams) {
-        //     for (const player of team.players) {
-        //         if (player.tag === author.name) {
-        //             teamName = team.name;
-        //             break;
-        //         }
-        //     }
-        // }
+        const teams = require('./bingo-info/teams.json');
+        for (const team of teams) {
+            for (const player of team.players) {
+                if (player.tag === author.name) {
+                    teamName = team.name;
+                    break;
+                }
+            }
+        }
 
-        //const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
-        //const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
+        const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
+        const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
 
         if (button.customId === 'approve') {
             //mainChat.send(`The ${subject} from ${user} has been approved.`);
