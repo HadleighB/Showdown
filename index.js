@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { Client, Collection, GatewayIntentBits, Options, IntentsBitField } = require('discord.js');
 const { group } = require('console');
-const dotenv = require('dotenv').config({path: 'config.env'});
+const dotenv = require('dotenv').config({ path: 'config.env' });
 
 const intents = new IntentsBitField();
 intents.add(GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences);
@@ -9,25 +9,25 @@ const client = new Client({ intents: intents });
 
 client.commands = new Collection();
 const commandFiles = fs
-  .readdirSync('./commands')
-  .filter((file) => file.endsWith('.js'))
+    .readdirSync('./commands')
+    .filter((file) => file.endsWith('.js'))
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`)
-  client.commands.set(command.data.name, command)
+    const command = require(`./commands/${file}`)
+    client.commands.set(command.data.name, command)
 }
 
 const eventFiles = fs
-  .readdirSync('./events')
-  .filter((file) => file.endsWith('.js'))
+    .readdirSync('./events')
+    .filter((file) => file.endsWith('.js'))
 
 for (const file of eventFiles) {
-  const event = require(`./events/${file}`)
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, client))
-  } else {
-    client.on(event.name, (...args) => event.execute(...args, client))
-  }
+    const event = require(`./events/${file}`)
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args, client))
+    } else {
+        client.on(event.name, (...args) => event.execute(...args, client))
+    }
 }
 
 client.on('interactionCreate', async (interaction) => {
@@ -37,15 +37,15 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.isChatInputCommand()) {
         try {
             await console.log(
-            `/${interaction.commandName} — ${interaction.user.username}`
+                `/${interaction.commandName} — ${interaction.user.username}`
             )
             await command.execute(interaction, client)
         } catch (error) {
             console.error(error)
             return interaction.reply({
-            content: "An error occurred while executing this command!",
-            ephemeral: true,
-            fetchReply: true
+                content: "An error occurred while executing this command!",
+                ephemeral: true,
+                fetchReply: true
             })
         }
     } else if (interaction.isAutocomplete()) {
@@ -72,7 +72,7 @@ client.on('interactionCreate', async interaction => {
 
         let title = messageEmbed.title;
         let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC; let farmingType; let farmingValue;
-        
+
         if (title.includes('collection log entry')) {
             let split = title.split('collection log entry: ');
             subject = split[1];
@@ -195,5 +195,62 @@ client.on('interactionCreate', async interaction => {
         }
     }
 })
+
+client.on('ready', async () => {
+    const { GoogleSpreadsheet } = require('google-spreadsheet');
+    const doc = new GoogleSpreadsheet(process.env.SIGNUP_SHEET_ID);
+
+    await doc.useServiceAccountAuth({
+        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY,
+    });
+    await doc.loadInfo();
+
+    const sheet = doc.sheetsByIndex[1];
+    const rows = await sheet.getRows({ offset: 2, limit: 180 });
+
+    function assignCompetitorRole() {
+        for (const row of rows) {
+            if (row['Discord'] !== '') {
+                const user = client.users.cache.find(user => user.username === row['Discord']);
+
+                if (user) {
+                    const role = user.guild.roles.cache.find(role => role.name === 'Competitor');
+
+                    if (!user.roles.cache.has(role.id)) {
+                        user.roles.add(role);
+                    }
+                }
+            }
+        }
+    }
+
+    const signupSheet = doc.sheetsByIndex[0];
+    const signupRows = await signupSheet.getRows({ offset: 1 });
+
+    function assignSignupRole() {
+        for (const row of signupRows) {
+            if (row['Discord'] !== '') {
+                const user = client.users.cache.find(user => user.username === row['Discord']);
+
+                if (user) {
+                    const role = user.guild.roles.cache.find(role => role.name === 'Signup');
+
+                    if (!user.roles.cache.has(role.id)) {
+                        user.roles.add(role);
+                    }
+                }
+            }
+        }
+    }
+
+
+    var CronJob = require('cron').CronJob;
+    var job = new CronJob('0 0 0 * * *', function () {
+        assignCompetitorRole();
+        assignSignupRole();
+    }, null, true, 'America/Los_Angeles');
+    job.start();
+});
 
 client.login(process.env.TOKEN);

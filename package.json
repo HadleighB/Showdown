@@ -18,6 +18,7 @@
   "homepage": "https://github.com/HadleighB/Showdown#readme",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
+    "cron": "^2.3.1",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
