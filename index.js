@@ -71,7 +71,7 @@ client.on('interactionCreate', async interaction => {
         let teamName = 'No Team';
 
         let title = messageEmbed.title;
-        let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC; let farmingType; let farmingValue;
+        let subject; let invoLevel; let groupSize; let monster; let kc; let minigame; let minigameKC; let farmingType; let farmingValue; let challenge; let time; let playerCount;
 
         if (title.includes('collection log entry')) {
             let split = title.split('collection log entry: ');
@@ -104,6 +104,15 @@ client.on('interactionCreate', async interaction => {
 
             farmingType = split[1];
             farmingValue = descSplit[1];
+        } else if (title.includes('challenge: ')) {
+            challenge = title.split('challenge: ');
+            let descSplit = messageEmbed.description.split(' | ');
+            time = descSplit[0].split('Current time: ');
+            playerCount = descSplit[1].split('Player Count: ');
+
+            time = time[1];
+            playerCount = playerCount[1];
+            challenge = challenge[1];
         } else {
             subject = "Error: Subject not found";
         }
@@ -121,7 +130,7 @@ client.on('interactionCreate', async interaction => {
         }
 
         const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
-        const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
+        //const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
 
         if (button.customId === 'approve') {
             //mainChat.send(`The ${subject} from ${user} has been approved.`);
@@ -188,6 +197,16 @@ client.on('interactionCreate', async interaction => {
                     'Discord Name': author.name,
                     'Farming Type': farmingType,
                     'Contracts/Points': farmingValue,
+                    'Team Name': teamName,
+                    'Screenshot URL': screenshot
+                });
+            } else if (title.includes('challenge: ')) {
+                const sheet = doc.sheetsByIndex[6];
+                sheet.addRow({
+                    'Discord Name': author.name,
+                    'Challenge': challenge,
+                    'Time': time,
+                    'Player Count': playerCount,
                     'Team Name': teamName,
                     'Screenshot URL': screenshot
                 });
