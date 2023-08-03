@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-require ('dotenv').config({path: '../config.env'});
+require('dotenv').config({ path: '../config.env' });
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,8 +32,12 @@ module.exports = {
                 for (const player of players) {
                     // Get user from name
                     let username = player.tag.split('#')[0];
-                    const userID = await guild.members.cache.find(member => member.user.username === username).id;
-                    await guild.members.cache.get(userID).roles.add(role.id);
+                    const userID = await guild.members.cache.find(member => member.user.username === username);
+                    if (userID) {
+                        await guild.members.cache.get(userID.id).roles.add(role.id);
+                    } else {
+                        console.log(userID + ' not found!');
+                    }
                 }
             }
 
@@ -128,7 +132,7 @@ module.exports = {
                         const embed = new EmbedBuilder()
                             .setTitle('Webhook URL')
                             .setDescription(`Here is the webhook URL for ${config[team].name}`)
-                            .addFields( { name: 'URL', value: webhook.url } )
+                            .addFields({ name: 'URL', value: webhook.url })
                             .setColor(config[team].color)
                             .setTimestamp();
                         await webhook.send({

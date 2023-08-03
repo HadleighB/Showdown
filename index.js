@@ -130,15 +130,15 @@ client.on('interactionCreate', async interaction => {
         }
 
         const teamCategory = interaction.guild.channels.cache.find(channel => channel.name === teamName);
-        //const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
+        const mainChat = interaction.guild.channels.cache.find(channel => channel.name === 'main-chat' && channel.parentId === teamCategory.id);
 
         if (button.customId === 'approve') {
-            //mainChat.send(`The ${subject} from ${user} has been approved.`);
+            mainChat.send(`The ${subject} from ${user} has been approved.`);
             message.edit({ components: [] });
 
             message.react('✅');
         } else if (button.customId === 'deny') {
-            //mainChat.send(`The ${subject} from ${user} has been denied.`);
+            mainChat.send(`The ${subject} from ${user} has been denied.`);
             message.edit({ components: [] });
 
             message.react('❌');
