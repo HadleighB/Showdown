@@ -59,5 +59,6 @@ module.exports = {
         channel.send({ embeds: [embed], components: [actionRow] });
 
         interaction.reply(`Your minigame has been submitted!`);
+        interaction.reply({ files: [screenshot.url] });
     }
 };

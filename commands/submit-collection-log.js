@@ -70,5 +70,6 @@ module.exports = {
         channel.send({ embeds: [embed], components: [actionRow] });
 
         interaction.reply(`Your collection log item has been submitted!`);
+        interaction.reply({ files: [screenshot.url] });
     }
 };

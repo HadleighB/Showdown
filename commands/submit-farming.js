@@ -30,7 +30,7 @@ module.exports = {
         if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg')) {
             screenshot.url = "https://cdn-icons-png.flaticon.com/512/6231/6231942.png";
         }
-        
+
         const embed = new EmbedBuilder()
             .setTitle(`A player has submitted contracts/points: ${farming_type}`)
             .setDescription(`Current value: ${current_value}`)
@@ -53,9 +53,10 @@ module.exports = {
         const actionRow = new ActionRowBuilder()
             .addComponents(approveButton, denyButton);
 
-        
+
         channel.send({ embeds: [embed], components: [actionRow] });
 
         interaction.reply(`Your farming contracts/points has been submitted!`);
+        interaction.reply({ files: [screenshot.url] });
     }
 };

@@ -81,5 +81,6 @@ module.exports = {
         channel.send({ embeds: [embed], components: [actionRow] });
 
         interaction.reply(`Your monster killcount has been submitted!`);
+        interaction.reply({ files: [screenshot.url] });
     }
 };
