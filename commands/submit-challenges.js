@@ -63,7 +63,6 @@ module.exports = {
 
         channel.send({ embeds: [embed], components: [actionRow] });
 
-        interaction.reply(`Your challenge has been submitted!`);
-        interaction.reply({ files: [screenshot.url] });
+        interaction.reply({ embeds: [embed] });
     }
 };
