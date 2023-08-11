@@ -34,7 +34,7 @@ module.exports = {
 
         const channel = client.channels.cache.get('1118260344603816047');
 
-        if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg')) {
+        if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg') && !screenshot.url.endsWith('.PNG') && !screenshot.url.endsWith('.JPG') && !screenshot.url.endsWith('.JPEG')) {
             screenshot.url = "https://cdn-icons-png.flaticon.com/512/6231/6231942.png";
         }
 

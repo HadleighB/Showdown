@@ -12,7 +12,7 @@ module.exports = {
             option.setName('item-name')
                 .setDescription('The name of the item you are submitting')
                 .setRequired(true)
-                .setAutocomplete(true)),     
+                .setAutocomplete(true)),
     async autocomplete(interaction) {
         let focusedValue = interaction.options.getString("item-name");
         let items = require('../bingo-info/collection-log-items.json');
@@ -34,14 +34,14 @@ module.exports = {
                 value: item.value
             }))
         );
-    },   
+    },
     async execute(interaction, client) {
         let screenshot = interaction.options.getAttachment('screenshot');
         let itemName = interaction.options.getString('item-name');
 
         const channel = client.channels.cache.get('1118260344603816047');
 
-        if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg')) {
+        if (!screenshot.url.endsWith('.png') && !screenshot.url.endsWith('.jpg') && !screenshot.url.endsWith('.jpeg') && !screenshot.url.endsWith('.PNG') && !screenshot.url.endsWith('.JPG') && !screenshot.url.endsWith('.JPEG')) {
             screenshot.url = "https://cdn-icons-png.flaticon.com/512/6231/6231942.png";
         }
 
@@ -66,7 +66,7 @@ module.exports = {
         const actionRow = new ActionRowBuilder()
             .addComponents(approveButton, denyButton);
 
-        
+
         channel.send({ embeds: [embed], components: [actionRow] });
 
         interaction.reply(`Your collection log item has been submitted!`);
